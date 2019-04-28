@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.javabrains.pojo.CatalogItem;
 import com.javabrains.pojo.Movie;
 import com.javabrains.pojo.Rating;
+import com.javabrains.pojo.UserRating;
 
 @RestController
 @RequestMapping("/catalog")
@@ -34,10 +36,13 @@ public class MovieCatalogServiceResource {
 
 		// Movie m=rest.getForObject("http://localhost:8082/movies/1", Movie.class);
 
-		List<Rating> ratings = Arrays.asList(new Rating("1234", 4), new Rating("5678", 5), new Rating("90", 2));
+		// List<Rating> ratings = Arrays.asList(new Rating("1234", 4), new
+		// Rating("5678", 5), new Rating("90", 2));
 
-		return ratings.stream().map(r -> {
-			Movie m = rest.getForObject("http://localhost:8082/movies/" + r.getMovieId(), Movie.class);
+		UserRating ratings = rest.getForObject("http://localhost:9090/ratingsdata/users/" + userId, UserRating.class);
+
+		return ratings.getUserRating().stream().map(r -> {
+			Movie m = rest.getForObject("http://localhost:9093/movies/" + r.getMovieId(), Movie.class);
 			return new CatalogItem(m.getName(), "test desc", r.getRating());
 
 		}).collect(Collectors.toList());

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javabrains.Pojo.Rating;
+import com.javabrains.Pojo.UserRating;
 
 @RestController
 @RequestMapping("/ratingsdata")
@@ -19,10 +20,15 @@ public class RatingResource {
 		return new Rating("Transformer", 4);
 	}
 
-	@RequestMapping("/users/{userId}")
-	public List<Rating> getUserRating(@PathVariable String movieId) {
+	@RequestMapping("users/{userId}")
+	public UserRating getUserRating(@PathVariable String userId) {
 
-		return Arrays.asList(new Rating("1234", 4), new Rating("5678", 5), new Rating("90", 2));
+		List<Rating> l = Arrays.asList(new Rating("1234", 4), new Rating("5678", 5), new Rating("90", 2));
+		UserRating rating = new UserRating();
+		rating.setUserRating(l);
+
+		return rating;
+
 	}
 
 }
