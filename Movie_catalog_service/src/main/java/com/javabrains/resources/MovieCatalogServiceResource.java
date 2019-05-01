@@ -39,10 +39,10 @@ public class MovieCatalogServiceResource {
 		// List<Rating> ratings = Arrays.asList(new Rating("1234", 4), new
 		// Rating("5678", 5), new Rating("90", 2));
 
-		UserRating ratings = rest.getForObject("http://localhost:9090/ratingsdata/users/" + userId, UserRating.class);
+		UserRating ratings = rest.getForObject("http://rating_data_info/ratingsdata/users/" + userId, UserRating.class);
 
 		return ratings.getUserRating().stream().map(r -> {
-			Movie m = rest.getForObject("http://localhost:9093/movies/" + r.getMovieId(), Movie.class);
+			Movie m = rest.getForObject("http://movie_info_service/movies/" + r.getMovieId(), Movie.class);
 			return new CatalogItem(m.getName(), "test desc", r.getRating());
 
 		}).collect(Collectors.toList());
